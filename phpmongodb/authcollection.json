@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "620f6426de21000044001ce2"
+  },
+  "username": "Aakash Chahar",
+  "email": "aakash@gmail.com",
+  "password": "abc123"
+},{
+  "_id": {
+    "$oid": "620f6537de21000044001ce3"
+  },
+  "username": "Naman Sharma",
+  "email": "naman@gmail.com",
+  "password": "abc123"
+},{
+  "_id": {
+    "$oid": "620f67fcde21000044001ce4"
+  },
+  "username": "Ajay Rajput",
+  "email": "ajay@gmail.com",
+  "password": "abc123"
+},{
+  "_id": {
+    "$oid": "620f6bddde21000044001ce5"
+  },
+  "username": "Ishaan",
+  "email": "ishaan@gmail.com",
+  "password": "abc123"
+}]
