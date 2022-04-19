@@ -549,7 +549,7 @@ padding-bottom: 12px;
 
             <div class="row university">
                 <div class="col-md-7">
-                <?php if($this->session->userdata['is_Approved'] == "N"){ ?>
+                <?php if($this->session->userdata['is_Approved'] == "V"){ ?>
                 <?php if(!empty($UniBoard)):?>
                 <div id="year_modal" class="row" style="padding: 4px 8px 4px 14px; border:1px solid #B0B0B0;margin-left:15px;margin-right:15px;border-radius: 20px; box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.3); background-color: #fff;
                      border: 1px solid #dddddd;margin-bottom:20px;margin-top:20px; width: 132px; cursor: pointer;">
