@@ -80,13 +80,16 @@ class Dashboard extends MY_Controller {
         $access_token = $this->Report_model->curl_authToken();
         if ($access_token && $org_id) {
             $authorization = "Authorization: Bearer ".$access_token;
+
+
+            //Indian Navy check
             if($this->session->userdata("institution_type")=='IndianNavy'){
-                //$url = 	ELK_API_BASEURL.'indiannavy';
-                $url = 	'http://nadbusinessapi.com/indiannavy';
-               // $apiData = $this->Report_model->curl_getData($url, $authorization, ['org_id'=>$org_id]);
+                $url = 	ELK_API_BASEURL.'indiannavy';
+                //$url = 	'http://nadbusinessapi.com/indiannavy';
                 $apiDataYearwise = $this->Report_model->curl_getData($url, $authorization, ['org_id'=>$org_id,'year'=>$year]);
                 $apiData = json_decode($apiDataYearwise, true);
-               // prx($apiData);
+
+                //summary data
                 if($apiData['status'] == "success" && isset($apiData['data'])){
                     $summaryData = $apiData['data'];
                     if($summaryData) {
@@ -100,6 +103,8 @@ class Dashboard extends MY_Controller {
                         $viewdata["total_process_marksheet"] = 0;
                     }
                 }
+
+                //yearwise data
                 if($apiData['status'] == "success" && isset($apiData['yearwise_data'])){
                     $yearwiseData = $apiData['yearwise_data'];
                     if($yearwiseData) {
@@ -110,38 +115,40 @@ class Dashboard extends MY_Controller {
                     }
                 }
 
-            }else{
-                $url 		= 	ELK_API_BASEURL.'getOrganisationSummaryData';
-            $url1 		= 	ELK_API_BASEURL.'getOrganisationDataYearwise';
-            $apiData = $this->Report_model->curl_getData($url, $authorization, ['org_id'=>$org_id]);
-            $apiDataYearwise = $this->Report_model->curl_getData($url1, $authorization, ['org_id'=>$org_id,'year'=>$year]);
-            echo $org_id;
-            echo "<pre>";
-            print_r(["getOrganisationSummaryData"=>$apiData]);
-            //prx(["getOrganisationDataYearwise"=>$apiDataYearwise]);
-            $apiData = json_decode($apiData, true);
-            $apiDataYearwise = json_decode($apiDataYearwise, true);
-            //for summary data
-            if($apiData['status'] == "success" && isset($apiData['data'])){
-                $summaryData = $apiData['data'];
-                if($summaryData) {
-                    $viewdata["total_summary_count"] = $summaryData['total_records'];
-                    $viewdata["total_process_degree"] = $summaryData['total_process_degree'];
-                    $viewdata["total_process_diploma"] = $summaryData['total_process_diploma'];
-                    $viewdata["total_process_marksheet"] = $summaryData['total_process_marksheet'];
-                    $viewdata["total_record_only_upload"] = $summaryData['total_record_only_upload'];
+            } //Indian Navy Checks ends 
+
+
+            else{
+                $url = 	ELK_API_BASEURL.'getOrganisationSummaryData';
+                $url1 = 	ELK_API_BASEURL.'getOrganisationDataYearwise';
+                $apiData = $this->Report_model->curl_getData($url, $authorization, ['org_id'=>$org_id]);
+                $apiDataYearwise = $this->Report_model->curl_getData($url1, $authorization, ['org_id'=>$org_id,'year'=>$year]);
+                echo $org_id;
+                echo  "<pre>";
+                print_r(["getOrganisationSummaryData"=>$apiData]);
+                //prx(["getOrganisationDataYearwise"=>$apiDataYearwise]);
+                $apiData = json_decode($apiData, true);
+                $apiDataYearwise = json_decode($apiDataYearwise, true);
+                //for summary data
+                if($apiData['status'] == "success" && isset($apiData['data'])){
+                    $summaryData = $apiData['data'];
+                    if($summaryData) {
+                        $viewdata["total_summary_count"] = $summaryData['total_records'];
+                        $viewdata["total_process_degree"] = $summaryData['total_process_degree'];
+                        $viewdata["total_process_diploma"] = $summaryData['total_process_diploma'];
+                        $viewdata["total_process_marksheet"] = $summaryData['total_process_marksheet'];
+                        $viewdata["total_record_only_upload"] = $summaryData['total_record_only_upload'];
                     
-                }else{
-                    $viewdata["total_summary_count"] =0;
-                    $viewdata["total_process_degree"] = 0;
-                    $viewdata["total_process_diploma"] = 0;
-                    $viewdata["total_process_marksheet"] = 0;
-                    $viewdata["total_record_only_upload"] = 0;
-                }    
-            }
-              //
-              if($apiDataYearwise['status'] == "success" && isset($apiDataYearwise['data'])) {
-                $yearwiseData = $apiDataYearwise['data'];
+                    }else{
+                        $viewdata["total_summary_count"] =0;
+                        $viewdata["total_process_degree"] = 0;
+                        $viewdata["total_process_diploma"] = 0;
+                        $viewdata["total_process_marksheet"] = 0;
+                        $viewdata["total_record_only_upload"] = 0;
+                    }    
+                }
+                if($apiDataYearwise['status'] == "success" && isset($apiDataYearwise['data'])) {
+                    $yearwiseData = $apiDataYearwise['data'];
                     if($yearwiseData){
                         $viewdata['stats'][0] = $yearwiseData;
                     }
