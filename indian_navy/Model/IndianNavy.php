@@ -9,38 +9,15 @@ class IndianNavy extends Model
     //Collection Name
     protected $collection = 'indian_navy';
 
+    //method to get total award count on an org_id
     public function get_data($org_id){
-
-    //callback function for raw query
-       $func = function ($collection) use ($org_id) {
-        return $collection->aggregate([
-                [
-                    '$match'=> ['ORG_ID'=> $org_id]
-                ], [
-                    '$group'=> ['_id'=> '$DOC_TYPE', 'Count'=> ['$sum'=> 1], 'YEAR'=> ['$addToSet'=> '$YEAR'] ]
-                ]
-            ]);
-        };
-
-    //Raw Mongo Aggregation Query 
-    return $this->raw($func);
+        return $this->where('ORG_ID',$org_id)->groupBy('DOC_TYPE')->aggregate('count',['DOC_TYPE'])->get();
     }
 
 
+    //method to get yearwise total award count on an org_id
     public function get_yearwise_data($org_id,$year){
-
-        //callback function for raw query
-        $func = function ($collection) use ($org_id,$year) {
-         return $collection->aggregate([
-                 [
-                     '$match'=> ['ORG_ID'=> $org_id,'YEAR'=>$year]
-                 ], [
-                     '$group'=> ['_id'=> '$DOC_TYPE', 'Count'=> ['$sum'=> 1], 'YEAR'=> ['$addToSet'=> '$YEAR'] ]
-                 ]
-             ]);
-        }; 
-
-        return $this->raw($func);
+        return $this->where(['ORG_ID'=> $org_id,'YEAR'=>$year])->groupBy('DOC_TYPE')->aggregate('count',['DOC_TYPE'])->get();
      }
 
     
